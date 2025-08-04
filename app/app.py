@@ -3,10 +3,19 @@ import joblib
 from sentence_transformers import SentenceTransformer
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import numpy as np
+import os
+from huggingface_hub import login
 
-# Load model and embedder
-model = joblib.load("models/model.pkl")
+# Authenticate with Hugging Face token (for Streamlit Cloud)
+hf_token = os.getenv("HF_TOKEN")
+if hf_token:
+    login(token=hf_token)
+
+# Load embedder
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
+
+# Load ML model and sentiment analyzer
+model = joblib.load("models/model.pkl")
 analyzer = SentimentIntensityAnalyzer()
 
 # Label map
